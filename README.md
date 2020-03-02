@@ -1,4 +1,4 @@
-# Download Articles automatically by title
+# Download articles automatically by title
 
 This code downloads scientific articles by their titles using SciHub and Python 3.7.
 
