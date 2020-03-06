@@ -1,9 +1,9 @@
 import os
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
 
 
 class Crawler:
@@ -30,6 +30,7 @@ class Crawler:
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-gpu')
         self.options.add_argument('--headless')
+        self.fail_list = []
 
     def search(self, query):
         driver = webdriver.Chrome(self.directory_chromedriver, options=self.options)
@@ -45,12 +46,13 @@ class Crawler:
             download_button.click()
         except NoSuchElementException:
             print(f"Error: Could not download '{query}'")
-            self.write_fails(query)
+            self.fail_list.append(query)
             return False
 
         return True
 
-    def write_fails(self, query):
+    def write_fails(self):
         txt_path = os.path.join(self.download_directory, self.fail_file_name)
-        with open(txt_path, 'a') as file:
-            file.write(query + '\n')
+        with open(txt_path, 'w') as f:
+            for file in self.fail_list:
+                f.write(file + '\n')

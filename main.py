@@ -6,7 +6,7 @@ def main():
     input("Save a .csv or .xlsx file in the Excel folder\nPress any key to continue when you're finished")
     titles = get_titles()
     download_articles_from(titles)
-    input("Done...\nPress any key to close...")
+    print("Done...")
 
 
 if __name__ == '__main__':

@@ -1,17 +1,15 @@
-import threading
+from concurrent.futures.thread import ThreadPoolExecutor
 
 from Crawler import Crawler
 
 
-# TODO: Limit thread number
-def create_download_thread(crawler, title):
-    download_thread = threading.Thread(target=crawler.search, args=(title,))
-    download_thread.start()
-
-
-# This function will download all PDFs it can to Artigos directory
+# This function will download all PDFs it can to Articles directory
 def download_articles_from(titles_list):
     crawler = Crawler()
+    print("Starting download")
+    pool = ThreadPoolExecutor(max_workers=5)
     for title in titles_list:
-        # download_thread(crawler, title)
-        crawler.search(title)
+        pool.submit(crawler.search, title)
+
+    pool.shutdown(wait=True)
+    crawler.write_fails()
